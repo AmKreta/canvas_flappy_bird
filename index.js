@@ -7,8 +7,23 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d', { alpha: false });
 const scoreDiv = document.getElementById('score');
 const startButton = document.getElementById('button');
+const dying_duck_sound = new Audio('./dying_duck_bgm.mp3');
+let world;
+let bird;
 let play = true;
 let score = 0;
+
+function init() {
+    dying_duck_sound.pause();
+    world = new World({ gravity: new Vector(0, 10), onGameOver });
+    bird = new Bird({ ctx });
+    world.add_sprite(bird);
+    window.onkeydown = e => {
+        if (e.code === 'Space') bird.jump();
+        if (e.code === 'ArrowRight') bird.moveHorizontally(1);
+        if (e.code === 'ArrowLeft') bird.moveHorizontally(-1);
+    }
+}
 
 function hideStartButton() {
     startButton.style.display = 'none';
@@ -19,6 +34,7 @@ function showStartButton() {
 }
 
 startButton.onclick = () => {
+    init();
     play = true;
     score = -1;
     onUpdate();
@@ -33,24 +49,16 @@ function onUpdate() {
 
 function onGameOver() {
     play = false;
+    dying_duck_sound.play();
 }
-
-const world = new World({ gravity: new Vector(0, 10), onGameOver });
-const bird = new Bird({ ctx });
-world.add_sprite(bird);
-
-window.onkeydown = e => {
-    if (e.code === 'Space') bird.jump();
-    if (e.code === 'ArrowRight') bird.moveHorizontally(1);
-    if (e.code === 'ArrowLeft') bird.moveHorizontally(-1);
-}
-let i = 0;
 
 function add_bar() {
     const bar = new Bars({ ctx, canvas, birdRadius: bird.radius });
     world.add_sprite(bar);
     i = 0;
 }
+
+let i = 0;
 
 function loop() {
     if (play) window.requestAnimationFrame(loop);

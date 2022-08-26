@@ -10,6 +10,11 @@ class Bird extends Sprite {
         this.radius = 30;
         this.accelerate = 25;
         this.steps = 0;
+        this.quack_audio=new Audio('./quack_bgm.mp3');
+    }
+
+    quack(){
+        this.quack_audio.play();
     }
 
     render() {
@@ -41,6 +46,7 @@ class Bird extends Sprite {
 
     jump() {
         this.acceleration.y = this.accelerate;
+        this.quack();
     }
 
     moveHorizontally(dx) {
