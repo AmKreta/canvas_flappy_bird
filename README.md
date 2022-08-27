@@ -1,6 +1,8 @@
 # canvas_flappy_bird
 flappy bird clone made using js and html canvas
 
+[https://flappybirdcanvas.netlify.app/]live at 
+
 
 ## How to run ?
 - open terminal
